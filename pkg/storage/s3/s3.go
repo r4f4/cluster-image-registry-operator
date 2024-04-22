@@ -409,6 +409,11 @@ func (d *driver) ConfigEnv() (envs envvar.List, err error) {
 		envs = append(envs, envvar.EnvVar{Name: "REGISTRY_STORAGE_S3_KEYID", Value: d.Config.KeyID})
 	}
 
+	if d.Config.ChunkSizeMiB > 0 {
+		var chunksize = d.Config.ChunkSizeMiB * 1024 * 1024
+		envs = append(envs, envvar.EnvVar{Name: "REGISTRY_STORAGE_S3_CHUNKSIZE", Value: chunksize})
+	}
+
 	envs = append(envs,
 		envvar.EnvVar{Name: "REGISTRY_STORAGE", Value: "s3"},
 		envvar.EnvVar{Name: "REGISTRY_STORAGE_S3_BUCKET", Value: d.Config.Bucket},

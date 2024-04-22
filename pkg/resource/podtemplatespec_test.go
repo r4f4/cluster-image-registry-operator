@@ -464,9 +464,10 @@ func TestMakePodTemplateSpecS3CloudFront(t *testing.T) {
 			Storage: v1.ImageRegistryConfigStorage{
 				ManagementState: "Unmanaged",
 				S3: &v1.ImageRegistryConfigStorageS3{
-					Bucket:  "bucket",
-					Region:  "region",
-					Encrypt: true,
+					Bucket:       "bucket",
+					Region:       "region",
+					ChunkSizeMiB: 10,
+					Encrypt:      true,
 					CloudFront: &v1.ImageRegistryConfigStorageS3CloudFront{
 						BaseURL:   "https://cloudfront.example.com",
 						KeypairID: "keypair-id",
@@ -519,6 +520,7 @@ func TestMakePodTemplateSpecS3CloudFront(t *testing.T) {
 	expectedEnvVars := map[string]corev1.EnvVar{
 		"REGISTRY_STORAGE":                          {Value: "s3"},
 		"REGISTRY_STORAGE_S3_BUCKET":                {Value: "bucket"},
+		"REGISTRY_STORAGE_S3_CHUNKSIZE":             {Value: "10485760"},
 		"REGISTRY_STORAGE_S3_REGION":                {Value: "region"},
 		"REGISTRY_STORAGE_S3_ENCRYPT":               {Value: "true"},
 		"REGISTRY_STORAGE_S3_VIRTUALHOSTEDSTYLE":    {Value: "true"},
